@@ -1,5 +1,6 @@
 name: Mi Primer Workflow
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,17 +8,34 @@ jobs:
       platform: aws
       region: us-east-1
       account: development
+      USER_PASS: ${{ secrets.password }}
+
     steps:
       - name: Mostrar mensaje inicial
         run: echo "Hola Mundo"
+
       - name: Auditoria de variables de entorno
         run: |
           echo "Plataforma de despliegue: ${{ env.platform }}"
           echo "Region asignada: ${{ env.region }}"
           echo "Entorno de cuenta: ${{ env.account }}"
+
       - name: Paso exclusivo para AWS
         if: env.platform == 'aws'
         run: echo "Desplegando infraestructura en Amazon Web Services..."
+
       - name: Paso exclusivo para Azure
         if: env.platform == 'azure'
         run: echo "Este paso no deberia ejecutarse."
+
+      - name: Debug del payload completo
+        run: echo '${{ toJSON(github.event) }}'
+
+      - name: Mostrar Metadatos Basicos
+        run: |
+          echo "Usuario ejecutor: ${{ github.actor }}"
+          echo "Repositorio activo: ${{ github.repository }}"
+
+      - name: Validacion de Credenciales
+        if: ${{ secrets.password != '' }}
+        run: echo "Estado: Credenciales de autenticacion detectadas. Procediendo..."
