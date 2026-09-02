@@ -15,3 +15,9 @@ jobs:
           echo "Plataforma de despliegue: ${{ env.platform }}"
           echo "Region asignada: ${{ env.region }}"
           echo "Entorno de cuenta: ${{ env.account }}"
+      - name: Paso exclusivo para AWS
+        if: env.platform == 'aws'
+        run: echo "Desplegando infraestructura en Amazon Web Services..."
+      - name: Paso exclusivo para Azure
+        if: env.platform == 'azure'
+        run: echo "Este paso no deberia ejecutarse."
