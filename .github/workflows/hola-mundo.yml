@@ -1,0 +1,17 @@
+name: Mi Primer Workflow
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      platform: aws
+      region: us-east-1
+      account: development
+    steps:
+      - name: Mostrar mensaje inicial
+        run: echo "Hola Mundo"
+      - name: Auditoria de variables de entorno
+        run: |
+          echo "Plataforma de despliegue: ${{ env.platform }}"
+          echo "Region asignada: ${{ env.region }}"
+          echo "Entorno de cuenta: ${{ env.account }}"
